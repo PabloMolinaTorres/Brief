@@ -196,7 +196,7 @@
 <body>
 <header>
     <h1>Brief de Postproducción</h1>
-    <p>Selecciona las configuraciones de retoque. Al finalizar se genera un resumen y se abre un correo dirigido al equipo de Falabella.</p>
+    <p>Selecciona las configuraciones de retoque. Al finalizar se genera un resumen y se abrirá Gmail para enviar al equipo de Falabella.</p>
 </header>
 
 <main>
@@ -412,10 +412,10 @@
     <section class="card">
         <div class="footer-actions">
             <div>
-                <button type="button" class="primary" id="btnFinalizar">Finalizar brief y generar resumen</button>
+                <button type="button" class="primary" id="btnFinalizar">Finalizar brief y generar resumen + Gmail</button>
             </div>
             <div class="hint">
-                Se mostrará un resumen abajo y se abrirá tu cliente de correo<br>
+                Se mostrará un resumen abajo y se abrirá Gmail<br>
                 con el brief listo para enviar al equipo de Falabella.
             </div>
         </div>
@@ -478,15 +478,21 @@ Observaciones adicionales:
 ${obs}
 `;
 
+        // Mostrar resumen en pantalla
         const resumenDiv = document.getElementById("resumen");
         resumenDiv.style.display = "block";
         resumenDiv.textContent = resumenTexto;
 
-        const subject = encodeURIComponent(`Brief postproducción – ${proveedor} – ${emailProv}`);
+        // Construir asunto y body
+        const subjectRaw = `Brief postproducción – ${proveedor} – ${emailProv}`;
+        const subject = encodeURIComponent(subjectRaw);
         const body = encodeURIComponent(resumenTexto);
-        const mailtoLink = `mailto:${DESTINO}?subject=${subject}&body=${body}`;
+        const to = encodeURIComponent(DESTINO);
 
-        window.location.href = mailtoLink;
+        // URL de redacción de Gmail (abre en pestaña nueva)
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+
+        window.open(gmailUrl, "_blank");
     });
 </script>
 </body>
