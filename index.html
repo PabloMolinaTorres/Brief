@@ -1,260 +1,463 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Comparar</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 40px;
-      background: #fafafa;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    .upload-box {
-      border: 2px dashed #8fca00;
-      border-radius: 10px;
-      background: white;
-      color: #444;
-      padding: 40px;
-      text-align: center;
-      cursor: pointer;
-      margin-bottom: 30px;
-    }
-    .pair {
-      display: flex;
-      gap: 0;
-      margin-bottom: 40px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .img-wrapper {
-      position: relative;
-      width: 50%;
-      padding: 10px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    .img-wrapper img {
-      max-width: 100%;
-      max-height: 400px;
-      border: 1px solid #ddd;
-      background: white;
-      cursor: zoom-in;
-    }
-    .img-label {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #666;
-    }
-    .controls {
-      margin-top: 15px;
-    }
-    .controls label {
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    .controls input[type="text"] {
-      margin-top: 10px;
-      width: 80%;
-      padding: 5px;
-      font-size: 13px;
-      display: none;
-    }
-    #exportButton {
-      display: block;
-      margin: 40px auto 0;
-      padding: 12px 24px;
-      background-color: #8fca00;
-      border: none;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    input[type="file"] {
-      display: none !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Brief de Postproducción</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background: #0a472e;
+            color: #fff;
+            padding: 16px 24px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.85;
+        }
+        main {
+            max-width: 1100px;
+            margin: 24px auto;
+            padding: 0 16px 40px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .card h2 span.label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #888;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .option {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 10px 8px;
+            position: relative;
+            cursor: pointer;
+            background: #fafafa;
+            transition: all 0.15s ease;
+            font-size: 13px;
+        }
+        .option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .option span.main-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .option span.sub-label {
+            display: block;
+            font-size: 11px;
+            color: #777;
+        }
+        .option:hover {
+            border-color: #0a472e;
+            background: #f1faf5;
+        }
+        .option.selected {
+            border-color: #0a472e;
+            box-shadow: 0 0 0 1px #0a472e;
+            background: #e5f7ed;
+        }
+        .custom-input {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .custom-input label {
+            display: block;
+            margin-bottom: 4px;
+            color: #555;
+        }
+        .custom-input input[type="text"],
+        .custom-input input[type="number"],
+        .custom-input input[type="color"] {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .meta-grid label {
+            font-size: 12px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .meta-grid input {
+            width: 100%;
+            padding: 7px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+        }
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        button.primary {
+            background: #0a472e;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        button.primary:hover {
+            opacity: 0.9;
+        }
+        .hint {
+            font-size: 11px;
+            color: #666;
+        }
+        #resumen {
+            white-space: pre-wrap;
+            font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            background: #111;
+            color: #e2ffe9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            max-height: 260px;
+            overflow: auto;
+        }
+        @media (max-width: 600px) {
+            header, main {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Comparador Visual</h1>
-  <div id="uploadBox" class="upload-box">
-    📁 Suelta tus imágenes aquí (drag & drop)
-  </div>
-  <input type="file" id="fileInput" multiple accept="image/*">
-  <div id="comparisonContainer"></div>
-  <button id="exportButton">Exportar reporte</button>
+<header>
+    <h1>Brief de Postproducción</h1>
+    <p>El proveedor selecciona sus preferencias de retoque. Al finalizar se genera un resumen y se abre un correo con la configuración elegida.</p>
+</header>
 
-  <script>
-    const uploadBox = document.getElementById('uploadBox');
-    const fileInput = document.getElementById('fileInput');
-    const container = document.getElementById('comparisonContainer');
-    const exportButton = document.getElementById('exportButton');
-    const resultados = {};
+<main>
+    <!-- Datos generales -->
+    <section class="card">
+        <h2>Datos del proveedor y proyecto <span class="label">General</span></h2>
+        <div class="meta-grid">
+            <div>
+                <label for="proveedor">Nombre proveedor / estudio</label>
+                <input type="text" id="proveedor" placeholder="Ej: Estudio XYZ">
+            </div>
+            <div>
+                <label for="proyecto">Nombre proyecto / campaña</label>
+                <input type="text" id="proyecto" placeholder="Ej: Temporada SS25 Mujer">
+            </div>
+            <div>
+                <label for="emailProveedor">Email del proveedor</label>
+                <input type="email" id="emailProveedor" placeholder="proveedor@dominio.com">
+            </div>
+        </div>
+    </section>
 
-    uploadBox.addEventListener('dragover', e => {
-      e.preventDefault();
-      uploadBox.style.background = '#eaffd0';
+    <!-- Sombra -->
+    <section class="card">
+        <h2>Sombra <span class="label">Intensidad / Opacidad</span></h2>
+        <div class="options-grid" data-group="sombra">
+            <label class="option">
+                <input type="radio" name="sombra" value="Sin sombra">
+                <span class="main-label">Sin sombra</span>
+                <span class="sub-label">Producto flotando sobre el fondo.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="sombra" value="25%">
+                <span class="main-label">25%</span>
+                <span class="sub-label">Sombra muy suave (recomendado para catálogo limpio).</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="sombra" value="50%">
+                <span class="main-label">50%</span>
+                <span class="sub-label">Sombra media, más notoria.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="sombra" value="75%">
+                <span class="main-label">75%</span>
+                <span class="sub-label">Sombra fuerte, mayor contraste.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="sombra" value="100%">
+                <span class="main-label">100%</span>
+                <span class="sub-label">Sombra máxima, efecto dramático.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="sombra" value="Personalizado">
+                <span class="main-label">Personalizado</span>
+                <span class="sub-label">Indicar porcentaje o ejemplo de referencia.</span>
+                <div class="custom-input">
+                    <label>Detalle sombra personalizada</label>
+                    <input type="text" id="sombraCustom" placeholder="Ej: 35% + sombra ligeramente desplazada a la derecha">
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Fondo -->
+    <section class="card">
+        <h2>Fondo <span class="label">Color base</span></h2>
+        <div class="options-grid" data-group="fondo">
+            <label class="option">
+                <input type="radio" name="fondo" value="Blanco #FFFFFF">
+                <span class="main-label">Blanco</span>
+                <span class="sub-label">#FFFFFF — fondo totalmente blanco.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="fondo" value="Gris #EEEEEE">
+                <span class="main-label">Gris</span>
+                <span class="sub-label">#EEEEEE — gris muy suave.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="fondo" value="Gris claro #F7F7F7">
+                <span class="main-label">Gris claro</span>
+                <span class="sub-label">#F7F7F7 — casi blanco, ayuda con productos blancos.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="fondo" value="Personalizado">
+                <span class="main-label">Personalizado</span>
+                <span class="sub-label">Indicar color exacto o referencia.</span>
+                <div class="custom-input">
+                    <label>Color HEX o descripción</label>
+                    <input type="text" id="fondoCustomText" placeholder="Ej: #EAE5FF o degradado suave superior">
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Centro / posición del producto -->
+    <section class="card">
+        <h2>Centro / Posición del producto <span class="label">Encadre</span></h2>
+        <div class="options-grid" data-group="centro">
+            <label class="option">
+                <input type="radio" name="centro" value="Arriba">
+                <span class="main-label">Arriba</span>
+                <span class="sub-label">Producto levemente hacia el tercio superior.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="centro" value="Centrado">
+                <span class="main-label">Centrado</span>
+                <span class="sub-label">Producto completamente centrado.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="centro" value="Abajo">
+                <span class="main-label">Abajo</span>
+                <span class="sub-label">Producto apoyado visualmente en la parte inferior.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="centro" value="Personalizado">
+                <span class="main-label">Personalizado</span>
+                <span class="sub-label">Describir encuadre (ejemplo visual, margen, etc.).</span>
+                <div class="custom-input">
+                    <label>Detalle encuadre personalizado</label>
+                    <input type="text" id="centroCustom" placeholder="Ej: un poco más cerca del borde inferior, dejando aire arriba">
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Dimensiones -->
+    <section class="card">
+        <h2>Dimensiones de entrega <span class="label">Tamaño final</span></h2>
+        <div class="options-grid" data-group="dimensiones">
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Falabella 1500x1000 px">
+                <span class="main-label">Falabella</span>
+                <span class="sub-label">1500 x 1000 px (relación 3:2 aprox.).</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Marketplace 1500x1500 px">
+                <span class="main-label">Marketplace</span>
+                <span class="sub-label">1500 x 1500 px (cuadrado).</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Instagram 1080x1080 px">
+                <span class="main-label">Instagram</span>
+                <span class="sub-label">1080 x 1080 px.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Personalizado">
+                <span class="main-label">Personalizado</span>
+                <span class="sub-label">Indicar ancho x alto en píxeles.</span>
+                <div class="custom-input">
+                    <label>Dimensión personalizada (ancho x alto)</label>
+                    <input type="text" id="dimensionesCustom" placeholder="Ej: 2000 x 1333 px">
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Borde / margen -->
+    <section class="card">
+        <h2>Borde / Margen respecto al canvas <span class="label">Respiro visual</span></h2>
+        <div class="options-grid" data-group="borde">
+            <label class="option">
+                <input type="radio" name="borde" value="Sin borde (producto lo más grande posible)">
+                <span class="main-label">Sin borde</span>
+                <span class="sub-label">Producto lo más grande posible sin cortar.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="borde" value="Borde 3%">
+                <span class="main-label">3%</span>
+                <span class="sub-label">Pequeño respiro alrededor del producto.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="borde" value="Borde 5%">
+                <span class="main-label">5%</span>
+                <span class="sub-label">Respiro más notorio, útil para móviles.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="borde" value="Personalizado">
+                <span class="main-label">Personalizado</span>
+                <span class="sub-label">Indicar porcentaje o referencia visual.</span>
+                <div class="custom-input">
+                    <label>Detalle borde personalizado</label>
+                    <input type="text" id="bordeCustom" placeholder="Ej: 2% lateral, 8% superior">
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Observaciones -->
+    <section class="card">
+        <h2>Observaciones adicionales <span class="label">Extras</span></h2>
+        <textarea id="observaciones" rows="4" style="width:100%; border-radius:8px; border:1px solid #ccc; padding:8px; font-size:13px;" placeholder="Ej: evitar recortar etiquetas, eliminar manchas de fondo, alinear todos los productos según referencia X..."></textarea>
+    </section>
+
+    <!-- Finalizar -->
+    <section class="card">
+        <div class="footer-actions">
+            <div>
+                <button type="button" class="primary" id="btnFinalizar">Finalizar brief y generar resumen</button>
+            </div>
+            <div class="hint">
+                Al hacer clic se mostrará un resumen abajo y se abrirá tu cliente de correo<br>
+                con el brief listo para enviar al equipo interno.
+            </div>
+        </div>
+        <div id="resumen" style="display:none;"></div>
+    </section>
+</main>
+
+<script>
+    // Cambia este correo al de tu equipo
+    const DESTINO = "tu-correo@empresa.com";
+
+    // Marcar visualmente la opción seleccionada
+    document.querySelectorAll(".options-grid").forEach(group => {
+        group.addEventListener("click", function (e) {
+            const option = e.target.closest(".option");
+            if (!option) return;
+            const input = option.querySelector("input[type='radio']");
+            if (!input) return;
+            const name = input.name;
+            // sacar selección previa
+            group.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+            // marcar nueva
+            option.classList.add("selected");
+            input.checked = true;
+        });
     });
 
-    uploadBox.addEventListener('dragleave', () => {
-      uploadBox.style.background = 'white';
-    });
-
-    uploadBox.addEventListener('drop', e => {
-      e.preventDefault();
-      uploadBox.style.background = 'white';
-      handleFiles(e.dataTransfer.files);
-    });
-
-    function handleFiles(fileList) {
-      const files = Array.from(fileList);
-      container.innerHTML = '';
-
-      files.forEach(file => {
-        const match = file.name.match(/^(\d+)_\d+/);
-        if (!match) return;
-
-        const sku = match[1];
-        const remoteUrl = `https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/${sku}/public`;
-
-        const pairDiv = document.createElement('div');
-        pairDiv.className = 'pair';
-
-        const leftDiv = createZoomableImage(remoteUrl, `Imagen original SKU: ${sku}`);
-        const localURL = URL.createObjectURL(file);
-        const rightDiv = createZoomableImage(localURL, `Tu imagen: ${file.name}`, sku);
-
-        pairDiv.appendChild(leftDiv);
-        pairDiv.appendChild(rightDiv);
-        container.appendChild(pairDiv);
-      });
+    function valorConPersonalizado(nombre, customId) {
+        const checked = document.querySelector("input[name='" + nombre + "']:checked");
+        if (!checked) return "No definido";
+        if (checked.value === "Personalizado") {
+            const extra = document.getElementById(customId)?.value?.trim();
+            return "Personalizado: " + (extra || "(sin detalle)");
+        }
+        return checked.value;
     }
 
-    function createZoomableImage(src, label, sku = null) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'img-wrapper';
+    document.getElementById("btnFinalizar").addEventListener("click", function () {
+        const proveedor = document.getElementById("proveedor").value.trim() || "(sin nombre)";
+        const proyecto = document.getElementById("proyecto").value.trim() || "(sin proyecto)";
+        const emailProv = document.getElementById("emailProveedor").value.trim() || "(sin email)";
 
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = label;
+        const sombra = valorConPersonalizado("sombra", "sombraCustom");
+        const fondo = valorConPersonalizado("fondo", "fondoCustomText");
+        const centro = valorConPersonalizado("centro", "centroCustom");
+        const dimensiones = valorConPersonalizado("dimensiones", "dimensionesCustom");
+        const borde = valorConPersonalizado("borde", "bordeCustom");
+        const obs = document.getElementById("observaciones").value.trim() || "(sin observaciones)";
 
-      const caption = document.createElement('div');
-      caption.className = 'img-label';
-      caption.textContent = label;
+        const resumenTexto =
+`BRIEF DE POSTPRODUCCIÓN – RESPUESTAS PROVEEDOR
+Proveedor: ${proveedor}
+Proyecto: ${proyecto}
+Email proveedor: ${emailProv}
 
-      wrapper.appendChild(img);
-      wrapper.appendChild(caption);
+Configuración solicitada:
+- Sombra: ${sombra}
+- Fondo: ${fondo}
+- Encadre / posición: ${centro}
+- Dimensiones de entrega: ${dimensiones}
+- Borde / margen: ${borde}
 
-      // Lupa dinámica solo al entrar
-      img.addEventListener('mouseenter', () => {
-        const magnifier = document.createElement('div');
-        magnifier.style.position = 'absolute';
-        magnifier.style.border = '2px solid #8fca00';
-        magnifier.style.width = '300px';
-        magnifier.style.height = '300px';
-        magnifier.style.pointerEvents = 'none';
-        magnifier.style.backgroundRepeat = 'no-repeat';
-        magnifier.style.backgroundSize = '250%';
-        magnifier.style.zIndex = '999';
-        magnifier.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-        wrapper.appendChild(magnifier);
+Observaciones adicionales:
+${obs}
+`;
 
-        wrapper.addEventListener('mousemove', e => moveMagnifier(e, img, magnifier));
-        wrapper.addEventListener('mouseleave', () => {
-          magnifier.remove();
-        });
-      });
+        // Mostrar resumen en pantalla
+        const resumenDiv = document.getElementById("resumen");
+        resumenDiv.style.display = "block";
+        resumenDiv.textContent = resumenTexto;
 
-      if (sku) {
-        const controls = document.createElement('div');
-        controls.className = 'controls';
+        // Armar mailto
+        const subject = encodeURIComponent("Brief postproducción – " + proyecto + " – " + proveedor);
+        const body = encodeURIComponent(resumenTexto);
+        const mailtoLink = `mailto:${DESTINO}?subject=${subject}&body=${body}`;
 
-        const approve = document.createElement('input');
-        approve.type = 'radio';
-        approve.name = `estado-${sku}`;
-        approve.value = 'Aprobado';
-        approve.id = `aprobado-${sku}`;
-
-        const approveLabel = document.createElement('label');
-        approveLabel.htmlFor = approve.id;
-        approveLabel.textContent = 'Aprobar';
-
-        const reject = document.createElement('input');
-        reject.type = 'radio';
-        reject.name = `estado-${sku}`;
-        reject.value = 'Rechazado';
-        reject.id = `rechazado-${sku}`;
-
-        const rejectLabel = document.createElement('label');
-        rejectLabel.htmlFor = reject.id;
-        rejectLabel.textContent = 'Rechazar';
-
-        const motivo = document.createElement('input');
-        motivo.type = 'text';
-        motivo.placeholder = 'Motivo del rechazo...';
-        motivo.id = `motivo-${sku}`;
-
-        approve.addEventListener('change', () => {
-          resultados[sku] = { estado: 'Aprobado', motivo: '' };
-          motivo.style.display = 'none';
-        });
-
-        reject.addEventListener('change', () => {
-          resultados[sku] = { estado: 'Rechazado', motivo: '' };
-          motivo.style.display = 'block';
-        });
-
-        motivo.addEventListener('input', () => {
-          if (resultados[sku]) {
-            resultados[sku].motivo = motivo.value;
-          }
-        });
-
-        controls.appendChild(approve);
-        controls.appendChild(approveLabel);
-        controls.appendChild(reject);
-        controls.appendChild(rejectLabel);
-        controls.appendChild(motivo);
-        wrapper.appendChild(controls);
-      }
-
-      return wrapper;
-    }
-
-    function moveMagnifier(e, img, magnifier) {
-      const rect = img.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const zoom = 2.5;
-      const size = 300;
-
-      let posX = x - size / 2;
-      let posY = y - size / 2;
-
-      magnifier.style.left = `${posX}px`;
-      magnifier.style.top = `${posY}px`;
-      magnifier.style.backgroundImage = `url('${img.src}')`;
-      magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
-      magnifier.style.backgroundPosition = `-${x * zoom - size / 2}px -${y * zoom - size / 2}px`;
-    }
-
-    exportButton.addEventListener('click', () => {
-      const data = [['SKU', 'Estado', 'Motivo']];
-      for (const sku in resultados) {
-        const r = resultados[sku];
-        data.push([sku, r.estado, r.motivo || '']);
-      }
-      const worksheet = XLSX.utils.aoa_to_sheet(data);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Reporte');
-      XLSX.writeFile(workbook, 'reporte_comparador.xlsx');
+        window.location.href = mailtoLink;
     });
-  </script>
+</script>
 </body>
 </html>
