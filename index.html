@@ -12,12 +12,12 @@
         body {
             margin: 0;
             padding: 0;
-            background: #f4f8f2; /* fondo suave verdoso */
+            background: #f4f8f2;
             color: #333;
         }
         header {
-            background: #0b3b24;     /* verde oscuro falabella */
-            color: #b3d343;          /* <-- TEXTO SUPERIOR EN b3d343 */
+            background: #0b3b24;     /* verde falabella */
+            color: #ffffff;          /* <-- TEXTO BLANCO */
             padding: 16px 24px;
         }
         header h1 {
@@ -27,7 +27,7 @@
         header p {
             margin: 4px 0 0;
             font-size: 13px;
-            opacity: 0.9;
+            opacity: 0.95;
         }
         main {
             max-width: 1100px;
@@ -63,7 +63,7 @@
         .option {
             border-radius: 8px;
             border: 1px solid #d5e3cf;
-            padding: 8px;
+            padding: 10px;
             position: relative;
             cursor: pointer;
             background: #fafdf8;
@@ -84,24 +84,10 @@
             object-fit: cover;
             border: 1px solid #e1ebdd;
         }
-        .option span.main-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        .option span.sub-label {
-            display: block;
-            font-size: 11px;
-            color: #667363;
-        }
-        .option:hover {
-            border-color: #8FCA00;
-            background: #f2fbe6;
-        }
         .option.selected {
             border-color: #8FCA00;
-            box-shadow: 0 0 0 1px #8FCA00;
             background: #e9f8d3;
+            box-shadow: 0 0 0 1px #8FCA00;
         }
         .custom-input {
             margin-top: 4px;
@@ -110,62 +96,39 @@
         .custom-input label {
             display: block;
             margin-bottom: 3px;
-            color: #4e5a4a;
         }
-        .custom-input input[type="text"] {
+        .custom-input input {
             width: 100%;
             padding: 6px 8px;
             border-radius: 6px;
             border: 1px solid #c4d2be;
-            font-size: 12px;
         }
         .meta-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 12px;
         }
-        .meta-grid label {
-            font-size: 12px;
-            margin-bottom: 4px;
-            display: block;
-        }
-        .meta-grid input {
-            width: 100%;
-            padding: 7px 8px;
-            border-radius: 6px;
-            border: 1px solid #c4d2be;
-            font-size: 13px;
-        }
-        .footer-actions {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 10px;
+        textarea {
+            width:100%;
+            border-radius:8px;
+            border:1px solid #c4d2be;
+            padding:8px;
+            font-size:13px;
+            resize: vertical;
         }
         button.primary {
-            background: #8FCA00; /* verde falabella */
+            background: #8FCA00;
             color: #fff;
             border: none;
             border-radius: 999px;
             padding: 10px 22px;
             font-size: 14px;
             font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
             cursor: pointer;
-        }
-        button.primary:hover {
-            opacity: 0.95;
-        }
-        .hint {
-            font-size: 11px;
-            color: #55624f;
         }
         #resumen {
             white-space: pre-wrap;
-            font-family: ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-family: monospace;
             font-size: 12px;
             background: #111;
             color: #e2ffe9;
@@ -174,317 +137,303 @@
             margin-top: 8px;
             max-height: 260px;
             overflow: auto;
-        }
-        textarea {
-            resize: vertical;
-        }
-        @media (max-width: 600px) {
-            header, main {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
+            display:none;
         }
     </style>
 </head>
 <body>
+
 <header>
     <h1>Brief de Postproducción</h1>
-    <p>Selecciona las configuraciones de retoque. Al finalizar se genera un resumen y se abre un correo dirigido al equipo de Falabella.</p>
+    <p>Selecciona las configuraciones. Al finalizar se genera un resumen listo para enviar al equipo de Falabella.</p>
 </header>
 
 <main>
-    <!-- Datos generales -->
+
+    <!-- Datos del proveedor -->
     <section class="card">
         <h2>Datos del proveedor <span class="label">Identificación</span></h2>
         <div class="meta-grid">
             <div>
-                <label for="proveedor">Nombre proveedor / estudio</label>
+                <label>Nombre proveedor</label>
                 <input type="text" id="proveedor" placeholder="Ej: Estudio XYZ">
             </div>
             <div>
-                <label for="emailProveedor">Email del proveedor</label>
-                <input type="email" id="emailProveedor" placeholder="proveedor@dominio.com">
+                <label>Email</label>
+                <input type="email" id="emailProveedor" placeholder="proveedor@mail.com">
             </div>
         </div>
     </section>
 
-    <!-- Sombra -->
+    <!-- SOMBRA -->
     <section class="card">
-        <h2>Sombra <span class="label">Intensidad / Opacidad</span></h2>
+        <h2>Sombra <span class="label">Opacidad</span></h2>
         <div class="options-grid" data-group="sombra">
+            
             <label class="option">
                 <input type="radio" name="sombra" value="Sin sombra">
-                <img src="img/sombra-sin.png" alt="Sin sombra">
-                <span class="main-label">Sin sombra</span>
-                <span class="sub-label">Producto flotando, sin sombra visible.</span>
+                <img src="img/sombra-sin.png">
+                <strong>Sin sombra</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="sombra" value="25%">
-                <img src="img/sombra-25.png" alt="Sombra 25%">
-                <span class="main-label">25%</span>
-                <span class="sub-label">Sombra muy suave (recomendado para catálogo limpio).</span>
+                <img src="img/sombra-25.png">
+                <strong>25%</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="sombra" value="50%">
-                <img src="img/sombra-50.png" alt="Sombra 50%">
-                <span class="main-label">50%</span>
-                <span class="sub-label">Sombra media, más marcada.</span>
+                <img src="img/sombra-50.png">
+                <strong>50%</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="sombra" value="75%">
-                <img src="img/sombra-75.png" alt="Sombra 75%">
-                <span class="main-label">75%</span>
-                <span class="sub-label">Sombra fuerte, alto contraste.</span>
+                <img src="img/sombra-75.png">
+                <strong>75%</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="sombra" value="100%">
-                <img src="img/sombra-100.png" alt="Sombra 100%">
-                <span class="main-label">100%</span>
-                <span class="sub-label">Sombra máxima, efecto dramático.</span>
+                <img src="img/sombra-100.png">
+                <strong>100%</strong>
             </label>
+
+            <!-- PERSONALIZADO + CAMPO DE TEXTO -->
             <label class="option">
                 <input type="radio" name="sombra" value="Personalizado">
-                <img src="img/sombra-custom.png" alt="Sombra personalizada">
-                <span class="main-label">Personalizado</span>
-                <span class="sub-label">Indicar porcentaje, dirección o referencia.</span>
+                <img src="img/sombra-custom.png">
+                <strong>Personalizado</strong>
                 <div class="custom-input">
-                    <label>Detalle sombra personalizada</label>
-                    <input type="text" id="sombraCustom" placeholder="Ej: 35% opacidad, desplazada a la derecha">
+                    <label>Indica valores</label>
+                    <input id="sombraCustom" type="text" placeholder="Ej: 32%, sombra dura a izquierda">
                 </div>
             </label>
         </div>
     </section>
 
-    <!-- Fondo -->
+    <!-- FONDO -->
     <section class="card">
-        <h2>Fondo <span class="label">Color base</span></h2>
+        <h2>Fondo <span class="label">Color</span></h2>
         <div class="options-grid" data-group="fondo">
+
             <label class="option">
                 <input type="radio" name="fondo" value="Blanco #FFFFFF">
-                <img src="img/fondo-blanco.png" alt="Fondo blanco">
-                <span class="main-label">Blanco</span>
-                <span class="sub-label">#FFFFFF — fondo totalmente blanco.</span>
+                <img src="img/fondo-blanco.png">
+                <strong>Blanco #FFFFFF</strong>
             </label>
+
             <label class="option">
-                <!-- CAMBIO: Gris #ECECEC -->
                 <input type="radio" name="fondo" value="Gris #ECECEC">
-                <img src="img/fondo-gris-ec.png" alt="Fondo gris #ECECEC">
-                <span class="main-label">Gris suave</span>
-                <span class="sub-label">#ECECEC — gris muy suave.</span>
+                <img src="img/fondo-gris-ec.png">
+                <strong>Gris #ECECEC</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="fondo" value="Gris claro #F7F7F7">
-                <img src="img/fondo-gris-f7.png" alt="Fondo gris claro #F7F7F7">
-                <span class="main-label">Gris claro</span>
-                <span class="sub-label">#F7F7F7 — casi blanco, útil para productos blancos.</span>
+                <img src="img/fondo-gris-f7.png">
+                <strong>Gris claro #F7F7F7</strong>
             </label>
+
+            <!-- PERSONALIZADO -->
             <label class="option">
                 <input type="radio" name="fondo" value="Personalizado">
-                <img src="img/fondo-custom.png" alt="Fondo personalizado">
-                <span class="main-label">Personalizado</span>
-                <span class="sub-label">Color HEX, degradado o textura específica.</span>
+                <img src="img/fondo-custom.png">
+                <strong>Personalizado</strong>
                 <div class="custom-input">
-                    <label>Color / descripción fondo</label>
-                    <input type="text" id="fondoCustomText" placeholder="Ej: #EAE5FF, degradado suave, etc.">
+                    <label>Color o descripción</label>
+                    <input id="fondoCustom" type="text" placeholder="Ej: #D9D9D9 o degradado suave">
                 </div>
             </label>
+
         </div>
     </section>
 
-    <!-- Encadre / posición -->
+    <!-- ENCUADRE -->
     <section class="card">
-        <h2>Encadre / posición del producto <span class="label">Composición</span></h2>
+        <h2>Encuadre <span class="label">Composición</span></h2>
         <div class="options-grid" data-group="centro">
+
             <label class="option">
                 <input type="radio" name="centro" value="Arriba">
-                <img src="img/encuadre-arriba.png" alt="Producto arriba">
-                <span class="main-label">Arriba</span>
-                <span class="sub-label">Producto un poco más alto, dejando aire abajo.</span>
+                <img src="img/encuadre-arriba.png">
+                <strong>Arriba</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="centro" value="Centrado">
-                <img src="img/encuadre-centro.png" alt="Producto centrado">
-                <span class="main-label">Centrado</span>
-                <span class="sub-label">Producto centrado en el canvas.</span>
+                <img src="img/encuadre-centro.png">
+                <strong>Centrado</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="centro" value="Abajo">
-                <img src="img/encuadre-abajo.png" alt="Producto abajo">
-                <span class="main-label">Abajo</span>
-                <span class="sub-label">Producto apoyado en la parte inferior.</span>
+                <img src="img/encuadre-abajo.png">
+                <strong>Abajo</strong>
             </label>
+
+            <!-- PERSONALIZADO -->
             <label class="option">
                 <input type="radio" name="centro" value="Personalizado">
-                <img src="img/encuadre-custom.png" alt="Encuadre personalizado">
-                <span class="main-label">Personalizado</span>
-                <span class="sub-label">Descríbelo (por ejemplo, siguiendo mockup referencia).</span>
+                <img src="img/encuadre-custom.png">
+                <strong>Personalizado</strong>
                 <div class="custom-input">
-                    <label>Detalle encuadre personalizado</label>
-                    <input type="text" id="centroCustom" placeholder="Ej: tercio inferior, alineado a la izquierda">
+                    <label>Indicar composición</label>
+                    <input id="centroCustom" type="text" placeholder="Ej: tercio superior, alineado izquierda">
                 </div>
             </label>
+
         </div>
     </section>
 
-    <!-- Dimensiones -->
+    <!-- DIMENSIONES -->
     <section class="card">
-        <h2>Dimensiones de entrega <span class="label">Tamaño final</span></h2>
+        <h2>Dimensiones <span class="label">Tamaño final</span></h2>
         <div class="options-grid" data-group="dimensiones">
-            <!-- CAMBIO: Falabella 1500x1500 -->
+
             <label class="option">
                 <input type="radio" name="dimensiones" value="Falabella 1500x1500 px">
-                <img src="img/dim-falabella-1500x1500.png" alt="1500x1500">
-                <span class="main-label">Falabella</span>
-                <span class="sub-label">1500 x 1500 px.</span>
+                <img src="img/dim-falabella-1500x1500.png">
+                <strong>Falabella 1500 x 1500</strong>
             </label>
-            <!-- CAMBIO: Vertical 1000x1500 -->
+
             <label class="option">
                 <input type="radio" name="dimensiones" value="Vertical 1000x1500 px">
-                <img src="img/dim-vertical-1000x1500.png" alt="1000x1500">
-                <span class="main-label">Vertical</span>
-                <span class="sub-label">1000 x 1500 px.</span>
+                <img src="img/dim-vertical-1000x1500.png">
+                <strong>Vertical 1000 x 1500</strong>
             </label>
-            <!-- CAMBIO: Horizontal 1500x1000 -->
+
             <label class="option">
                 <input type="radio" name="dimensiones" value="Horizontal 1500x1000 px">
-                <img src="img/dim-horizontal-1500x1000.png" alt="1500x1000">
-                <span class="main-label">Horizontal</span>
-                <span class="sub-label">1500 x 1000 px.</span>
+                <img src="img/dim-horizontal-1500x1000.png">
+                <strong>Horizontal 1500 x 1000</strong>
             </label>
+
+            <!-- PERSONALIZADO -->
             <label class="option">
                 <input type="radio" name="dimensiones" value="Personalizado">
-                <img src="img/dim-custom.png" alt="Dimensión personalizada">
-                <span class="main-label">Personalizado</span>
-                <span class="sub-label">Indicar ancho x alto en píxeles.</span>
+                <img src="img/dim-custom.png">
+                <strong>Personalizado</strong>
                 <div class="custom-input">
-                    <label>Dimensión personalizada (ancho x alto)</label>
-                    <input type="text" id="dimensionesCustom" placeholder="Ej: 2000 x 1333 px">
+                    <label>Ancho x alto</label>
+                    <input id="dimensionesCustom" type="text" placeholder="Ej: 2000 x 1333 px">
                 </div>
             </label>
+
         </div>
     </section>
 
-    <!-- Borde / margen -->
+    <!-- BORDE -->
     <section class="card">
-        <h2>Borde / margen respecto al canvas <span class="label">Respiro visual</span></h2>
+        <h2>Borde <span class="label">Margen</span></h2>
         <div class="options-grid" data-group="borde">
+
             <label class="option">
-                <input type="radio" name="borde" value="Sin borde (producto lo más grande posible)">
-                <img src="img/borde-sin.png" alt="Sin borde">
-                <span class="main-label">Sin borde</span>
-                <span class="sub-label">Producto lo más grande posible sin cortar.</span>
+                <input type="radio" name="borde" value="Sin borde">
+                <img src="img/borde-sin.png">
+                <strong>Sin borde</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="borde" value="Borde 3%">
-                <img src="img/borde-3.png" alt="Borde 3%">
-                <span class="main-label">3%</span>
-                <span class="sub-label">Respiro pequeño alrededor.</span>
+                <img src="img/borde-3.png">
+                <strong>3%</strong>
             </label>
+
             <label class="option">
                 <input type="radio" name="borde" value="Borde 5%">
-                <img src="img/borde-5.png" alt="Borde 5%">
-                <span class="main-label">5%</span>
-                <span class="sub-label">Borde más notorio.</span>
+                <img src="img/borde-5.png">
+                <strong>5%</strong>
             </label>
+
+            <!-- PERSONALIZADO -->
             <label class="option">
                 <input type="radio" name="borde" value="Personalizado">
-                <img src="img/borde-custom.png" alt="Borde personalizado">
-                <span class="main-label">Personalizado</span>
-                <span class="sub-label">Indicar porcentaje o lógica específica.</span>
+                <img src="img/borde-custom.png">
+                <strong>Personalizado</strong>
                 <div class="custom-input">
-                    <label>Detalle borde personalizado</label>
-                    <input type="text" id="bordeCustom" placeholder="Ej: 2% laterales, 8% arriba">
+                    <label>Detalle margen</label>
+                    <input id="bordeCustom" type="text" placeholder="Ej: 4% arriba, 6% laterales">
                 </div>
             </label>
+
         </div>
     </section>
 
-    <!-- Observaciones -->
+    <!-- OBSERVACIONES -->
     <section class="card">
-        <h2>Observaciones adicionales <span class="label">Extras</span></h2>
-        <textarea id="observaciones" rows="4" style="width:100%; border-radius:8px; border:1px solid #c4d2be; padding:8px; font-size:13px;" placeholder="Ej: eliminar imperfecciones del producto, unificar brillo entre vistas, etc."></textarea>
+        <h2>Observaciones</h2>
+        <textarea id="observaciones" rows="4"></textarea>
     </section>
 
-    <!-- Finalizar -->
+    <!-- FINALIZAR -->
     <section class="card">
-        <div class="footer-actions">
-            <div>
-                <button type="button" class="primary" id="btnFinalizar">Finalizar brief y generar resumen</button>
-            </div>
-            <div class="hint">
-                Se mostrará un resumen abajo y se abrirá tu cliente de correo<br>
-                con el brief listo para enviar al equipo de Falabella.
-            </div>
-        </div>
-        <div id="resumen" style="display:none;"></div>
+        <button class="primary" id="btnFinalizar">Finalizar brief</button>
+        <div id="resumen"></div>
     </section>
+
 </main>
 
 <script>
-    // Correos de destino (equipo Falabella)
     const DESTINO = "malejibarra@falabella.cl,vcastillog@falabella.cl,cipgallegoo@falabella.cl";
 
-    // Selección visual de opciones
     document.querySelectorAll(".options-grid").forEach(group => {
-        group.addEventListener("click", function (e) {
+        group.addEventListener("click", e => {
             const option = e.target.closest(".option");
-            if (!option) return;
-            const input = option.querySelector("input[type='radio']");
-            if (!input) return;
+            if(!option) return;
             group.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
             option.classList.add("selected");
-            input.checked = true;
+            option.querySelector("input[type=radio]").checked = true;
         });
     });
 
-    function valorConPersonalizado(nombre, customId) {
-        const checked = document.querySelector("input[name='" + nombre + "']:checked");
-        if (!checked) return "No definido";
-        if (checked.value === "Personalizado") {
-            const extra = document.getElementById(customId)?.value?.trim();
-            return "Personalizado: " + (extra || "(sin detalle)");
+    function personalizado(name, inputId) {
+        const r = document.querySelector(`input[name="${name}"]:checked`);
+        if(!r) return "No definido";
+        if(r.value === "Personalizado") {
+            return "Personalizado: " + (document.getElementById(inputId).value || "(sin detalle)");
         }
-        return checked.value;
+        return r.value;
     }
 
-    document.getElementById("btnFinalizar").addEventListener("click", function () {
-        const proveedor = document.getElementById("proveedor").value.trim() || "(sin nombre)";
-        const emailProv = document.getElementById("emailProveedor").value.trim() || "(sin email)";
+    document.getElementById("btnFinalizar").onclick = () => {
 
-        const sombra = valorConPersonalizado("sombra", "sombraCustom");
-        const fondo = valorConPersonalizado("fondo", "fondoCustomText");
-        const centro = valorConPersonalizado("centro", "centroCustom");
-        const dimensiones = valorConPersonalizado("dimensiones", "dimensionesCustom");
-        const borde = valorConPersonalizado("borde", "bordeCustom");
-        const obs = document.getElementById("observaciones").value.trim() || "(sin observaciones)";
+        const proveedor = document.getElementById("proveedor").value || "(sin nombre)";
+        const emailProv = document.getElementById("emailProveedor").value || "(sin email)";
 
-        const resumenTexto =
-`BRIEF DE POSTPRODUCCIÓN – RESPUESTAS PROVEEDOR
+        const sombra = personalizado("sombra","sombraCustom");
+        const fondo = personalizado("fondo","fondoCustom");
+        const centro = personalizado("centro","centroCustom");
+        const dimensiones = personalizado("dimensiones","dimensionesCustom");
+        const borde = personalizado("borde","bordeCustom");
+        const obs = document.getElementById("observaciones").value || "(sin observaciones)";
+
+        const texto =
+`BRIEF DE POSTPRODUCCIÓN
 
 Proveedor: ${proveedor}
-Email proveedor: ${emailProv}
+Email: ${emailProv}
 
-Configuración solicitada:
-- Sombra: ${sombra}
-- Fondo: ${fondo}
-- Encadre / posición: ${centro}
-- Dimensiones de entrega: ${dimensiones}
-- Borde / margen: ${borde}
+Sombra: ${sombra}
+Fondo: ${fondo}
+Encuadre: ${centro}
+Dimensiones: ${dimensiones}
+Borde: ${borde}
 
-Observaciones adicionales:
+Observaciones:
 ${obs}
 `;
 
-        const resumenDiv = document.getElementById("resumen");
-        resumenDiv.style.display = "block";
-        resumenDiv.textContent = resumenTexto;
+        const resumen = document.getElementById("resumen");
+        resumen.style.display = "block";
+        resumen.textContent = texto;
 
-        const subject = encodeURIComponent(`Brief postproducción – ${proveedor} – ${emailProv}`);
-        const body = encodeURIComponent(resumenTexto);
-        const mailtoLink = `mailto:${DESTINO}?subject=${subject}&body=${body}`;
-
-        window.location.href = mailtoLink;
-    });
+        const subject = encodeURIComponent(`Brief postproducción – ${proveedor}`);
+        const body = encodeURIComponent(texto);
+        window.location.href = `mailto:${DESTINO}?subject=${subject}&body=${body}`;
+    };
 </script>
+
 </body>
 </html>
