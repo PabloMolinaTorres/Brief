@@ -17,7 +17,7 @@
         }
         header {
             background: #0b3b24; /* verde oscuro falabella */
-            color: #fff;
+            color: #b3d343;      /* texto en verde falabella claro */
             padding: 16px 24px;
         }
         header h1 {
@@ -266,10 +266,10 @@
                 <span class="sub-label">#FFFFFF — fondo totalmente blanco.</span>
             </label>
             <label class="option">
-                <input type="radio" name="fondo" value="Gris #EEEEEE">
-                <img src="img/fondo-gris-ee.png" alt="Fondo gris #EEEEEE">
+                <input type="radio" name="fondo" value="Gris #ECECEC">
+                <img src="img/fondo-gris-ec.png" alt="Fondo gris #ECECEC">
                 <span class="main-label">Gris suave</span>
-                <span class="sub-label">#EEEEEE — gris muy suave.</span>
+                <span class="sub-label">#ECECEC — gris muy suave.</span>
             </label>
             <label class="option">
                 <input type="radio" name="fondo" value="Gris claro #F7F7F7">
@@ -290,7 +290,7 @@
         </div>
     </section>
 
-    <!-- Centro / posición del producto -->
+    <!-- Encadre / posición -->
     <section class="card">
         <h2>Encadre / posición del producto <span class="label">Composición</span></h2>
         <div class="options-grid" data-group="centro">
@@ -330,22 +330,22 @@
         <h2>Dimensiones de entrega <span class="label">Tamaño final</span></h2>
         <div class="options-grid" data-group="dimensiones">
             <label class="option">
-                <input type="radio" name="dimensiones" value="Falabella 1500x1000 px">
-                <img src="img/dim-falabella-1500x1000.png" alt="1500x1000">
+                <input type="radio" name="dimensiones" value="Falabella 1500x1500 px">
+                <img src="img/dim-falabella-1500x1500.png" alt="1500x1500">
                 <span class="main-label">Falabella</span>
+                <span class="sub-label">1500 x 1500 px.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Vertical 1000x1500 px">
+                <img src="img/dim-vertical-1000x1500.png" alt="1000x1500">
+                <span class="main-label">Vertical</span>
+                <span class="sub-label">1000 x 1500 px.</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="dimensiones" value="Horizontal 1500x1000 px">
+                <img src="img/dim-horizontal-1500x1000.png" alt="1500x1000">
+                <span class="main-label">Horizontal</span>
                 <span class="sub-label">1500 x 1000 px.</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="dimensiones" value="Marketplace 1500x1500 px">
-                <img src="img/dim-1500x1500.png" alt="1500x1500">
-                <span class="main-label">Marketplace</span>
-                <span class="sub-label">1500 x 1500 px (cuadrado).</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="dimensiones" value="Instagram 1080x1080 px">
-                <img src="img/dim-1080x1080.png" alt="1080x1080">
-                <span class="main-label">Instagram</span>
-                <span class="sub-label">1080 x 1080 px.</span>
             </label>
             <label class="option">
                 <input type="radio" name="dimensiones" value="Personalizado">
@@ -427,9 +427,7 @@
             if (!option) return;
             const input = option.querySelector("input[type='radio']");
             if (!input) return;
-            // limpiar selección previa solo dentro del grupo
             group.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-            // marcar nueva
             option.classList.add("selected");
             input.checked = true;
         });
@@ -473,17 +471,14 @@ Observaciones adicionales:
 ${obs}
 `;
 
-        // Mostrar resumen en pantalla
         const resumenDiv = document.getElementById("resumen");
         resumenDiv.style.display = "block";
         resumenDiv.textContent = resumenTexto;
 
-        // Asunto: que incluya nombre y correo del proveedor
         const subject = encodeURIComponent(`Brief postproducción – ${proveedor} – ${emailProv}`);
         const body = encodeURIComponent(resumenTexto);
         const mailtoLink = `mailto:${DESTINO}?subject=${subject}&body=${body}`;
 
-        // Abre el cliente de correo del proveedor
         window.location.href = mailtoLink;
     });
 </script>
