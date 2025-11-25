@@ -16,8 +16,8 @@
             color: #333;
         }
         header {
-            background: #0b3b24; /* verde oscuro falabella */
-            color: #b3d343;      /* texto en verde falabella claro */
+            background: #0b3b24;     /* verde oscuro falabella */
+            color: #b3d343;          /* <-- TEXTO SUPERIOR EN b3d343 */
             padding: 16px 24px;
         }
         header h1 {
@@ -266,6 +266,7 @@
                 <span class="sub-label">#FFFFFF — fondo totalmente blanco.</span>
             </label>
             <label class="option">
+                <!-- CAMBIO: Gris #ECECEC -->
                 <input type="radio" name="fondo" value="Gris #ECECEC">
                 <img src="img/fondo-gris-ec.png" alt="Fondo gris #ECECEC">
                 <span class="main-label">Gris suave</span>
@@ -329,18 +330,21 @@
     <section class="card">
         <h2>Dimensiones de entrega <span class="label">Tamaño final</span></h2>
         <div class="options-grid" data-group="dimensiones">
+            <!-- CAMBIO: Falabella 1500x1500 -->
             <label class="option">
                 <input type="radio" name="dimensiones" value="Falabella 1500x1500 px">
                 <img src="img/dim-falabella-1500x1500.png" alt="1500x1500">
                 <span class="main-label">Falabella</span>
                 <span class="sub-label">1500 x 1500 px.</span>
             </label>
+            <!-- CAMBIO: Vertical 1000x1500 -->
             <label class="option">
                 <input type="radio" name="dimensiones" value="Vertical 1000x1500 px">
                 <img src="img/dim-vertical-1000x1500.png" alt="1000x1500">
                 <span class="main-label">Vertical</span>
                 <span class="sub-label">1000 x 1500 px.</span>
             </label>
+            <!-- CAMBIO: Horizontal 1500x1000 -->
             <label class="option">
                 <input type="radio" name="dimensiones" value="Horizontal 1500x1000 px">
                 <img src="img/dim-horizontal-1500x1000.png" alt="1500x1000">
